@@ -1,12 +1,12 @@
+import contextlib
 import ctypes
 import os
 import pathlib
-import os
-import contextlib
+import platform
 
 from . import consts
 
-DIR_FOR_LINKER = os.environ.get("MCL_PATH", "/usr/local/opt/mcl")
+DIR_FOR_LINKER = os.environ.get("MCL_PATH", "/usr/local/lib/libmcl")
 
 
 @contextlib.contextmanager
@@ -20,7 +20,14 @@ def change_cwd(path):
 
 
 with change_cwd(DIR_FOR_LINKER):
-    mclbn384_256 = ctypes.CDLL("lib/libmclbn384_256.dylib")
+    system = platform.system()
+    if system == 'Darwin':
+        mclbn384_256 = ctypes.CDLL("lib/libmclbn384_256.dylib")
+    elif system == 'Linux':
+        mclbn384_256 = ctypes.CDLL("lib/libmclbn384_256.so")
+    else:
+        raise RuntimeError(f"Unsupported OS {system}")
+
 
 ret = mclbn384_256.mclBn_init(consts.BN384_256, consts.MCLBN_COMPILED_TIME_VAR)
 
