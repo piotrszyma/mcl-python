@@ -5,3 +5,6 @@ __pycache__/
 
 # C extensions
 *.sobuild/
+
+# Builds
+.build/

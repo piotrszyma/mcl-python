@@ -7,8 +7,6 @@ from ._G1 import G1
 from ._G2 import G2
 from ._Fp import Fp
 
-BUFFER_SIZE = 2048
-
 
 class GT(ctypes.Structure):
     _fields_ = [

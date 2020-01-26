@@ -6,8 +6,6 @@ from . import builder
 from ._Fp2 import Fp2
 from ._Fr import Fr
 
-BUFFER_SIZE = 2048
-
 
 class G2(ctypes.Structure):
     _fields_ = [
