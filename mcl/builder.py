@@ -196,3 +196,37 @@ def buildDeserialize(cls):
         wrapper(self, value, len(value))
 
     return deserialize
+
+
+def buildHashAndMapTo(cls):
+    wrapper = utils.wrap_function(
+        hook.mclbn384_256,
+        f"mclBn{cls.__name__}_hashAndMapTo",
+        None,
+        [ctypes.POINTER(cls), ctypes.c_char_p, ctypes.c_size_t],
+    )
+
+    @staticmethod
+    def hashAndMapTo(value):
+        result = cls()
+        wrapper(result, ctypes.c_char_p(value), len(value))
+        return result
+
+    return hashAndMapTo
+
+
+def buildPairing(cls, left_group, right_group):
+    wrapper = utils.wrap_function(
+        hook.mclbn384_256,
+        f"mclBn_pairing",
+        None,
+        [ctypes.POINTER(cls), ctypes.POINTER(left_group), ctypes.POINTER(right_group),],
+    )
+
+    @staticmethod
+    def pairing(g1, g2):
+        result = cls()
+        wrapper(result, g1, g2)
+        return result
+
+    return pairing

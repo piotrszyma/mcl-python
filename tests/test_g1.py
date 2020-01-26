@@ -38,3 +38,6 @@ class G1Tests(unittest.TestCase):
         random_fr2 = Fr()
         random_fr2.setByCSPRNG()
         self.assertNotEqual(g1 * random_fr, g1 * random_fr2)
+
+    def testHashAndMapTo(self):
+        g1 = G1.hashAndMapTo(b"test")

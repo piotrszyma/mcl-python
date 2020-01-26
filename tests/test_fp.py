@@ -28,12 +28,6 @@ class FpTests(unittest.TestCase):
     def testInv(self):
         pass
 
-    def testSqr(self):
-        pass
-
-    def testSquareRoot(self):
-        pass
-
     def testSerialization(self):
         pass
 

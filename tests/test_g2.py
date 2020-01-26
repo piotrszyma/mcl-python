@@ -26,3 +26,6 @@ class G2Tests(unittest.TestCase):
 
     def testNeg(self):
         not G2()
+
+    def testHashAndMapTo(self):
+        g1 = G2.hashAndMapTo(b"test")
