@@ -1,22 +1,53 @@
-
 import unittest
 
-from mcl.wrapper.Fp import Fp
+from mcl import Fp
+
 
 class FpTests(unittest.TestCase):
-  
-  def testInitFp(self):
-    self.assertIsNotNone(Fp())
+    def testInitFp(self):
+        self.assertIsNotNone(Fp())
 
-  def testGetStr(self):
-    fp = Fp()
-    fp.setStr(b'255')
-    s = fp.getStr()
-    self.assertEqual(255, s[0])
+    def testSetByCSPRNG(self):
+        Fp().setByCSPRNG()
 
-  def testSetInt(self):
-    Fp().setInt(1)
+    def testAdd(self):
+        Fp() + Fp()
 
-  def testByCSPRNG(self):
-    res = Fp().setByCSPRNG()
-    self.assertEqual(0, res)
+    def testSub(self):
+        Fp() - Fp()
+
+    def testMul(self):
+        Fp() * Fp()
+
+    def testDiv(self):
+        Fp() / Fp()
+
+    def testNeg(self):
+        not Fp()
+
+    def testInv(self):
+        pass
+
+    def testSqr(self):
+        pass
+
+    def testSquareRoot(self):
+        pass
+
+    def testSerialization(self):
+        pass
+
+    def testSetHashOf(self):
+        pass
+
+    def testMapToG1(self):
+        pass
+
+    def testStr(self):
+        fp = Fp()
+        fp.setStr(b"255")
+        s = fp.getStr()
+        self.assertEqual(b"255", s)
+
+    def testSetInt(self):
+        Fp().setInt(1)
