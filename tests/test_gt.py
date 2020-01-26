@@ -7,6 +7,7 @@ from mcl import Fr
 
 import test_data
 
+
 class GTTests(unittest.TestCase):
     def testInitGT(self):
         self.assertIsNotNone(GT())

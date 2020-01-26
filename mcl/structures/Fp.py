@@ -1,7 +1,7 @@
 import ctypes
 
-from . import builder
-from . import consts
+from .. import builder
+from .. import consts
 
 
 class Fp(ctypes.Structure):

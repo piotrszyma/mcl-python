@@ -9,7 +9,7 @@ import textwrap
 from . import consts
 
 DIR_FOR_LINKER = os.environ.get("MCL_PATH", "/usr/local/lib/libmcl")
- 
+
 
 @contextlib.contextmanager
 def change_cwd(path):
@@ -20,11 +20,14 @@ def change_cwd(path):
     finally:
         os.chdir(current_cwd)
 
+
 def get_dll(path):
     try:
         return ctypes.CDLL(path)
     except OSError:
-        print(textwrap.dedent(f"""
+        print(
+            textwrap.dedent(
+                f"""
         Failed to import mcl shared library from:
 
         {DIR_FOR_LINKER}
@@ -33,14 +36,17 @@ def get_dll(path):
 
         export MCL_PATH=<path to mcl library>
 
-        """))
+        """
+            )
+        )
         sys.exit(1)
+
 
 with change_cwd(DIR_FOR_LINKER):
     system = platform.system()
-    if system == 'Darwin':
-        mclbn384_256 = get_dll("lib/libmclbn384_256.dlib")
-    elif system == 'Linux':
+    if system == "Darwin":
+        mclbn384_256 = get_dll("lib/libmclbn384_256.dylib")
+    elif system == "Linux":
         mclbn384_256 = get_dll("lib/libmclbn384_256.so")
     else:
         raise RuntimeError(f"Unsupported OS {system}")

@@ -1,10 +1,10 @@
 import types
 import ctypes
 
-from . import utils
-from . import builder
-from ._Fp2 import Fp2
-from ._Fr import Fr
+from .. import utils
+from .. import builder
+from .Fp2 import Fp2
+from .Fr import Fr
 
 
 class G2(ctypes.Structure):

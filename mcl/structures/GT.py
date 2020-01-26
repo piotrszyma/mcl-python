@@ -1,11 +1,11 @@
 import types
 import ctypes
 
-from . import utils
-from . import builder
-from ._G1 import G1
-from ._G2 import G2
-from ._Fp import Fp
+from .. import utils
+from .. import builder
+from .G1 import G1
+from .G2 import G2
+from .Fp import Fp
 
 
 class GT(ctypes.Structure):
