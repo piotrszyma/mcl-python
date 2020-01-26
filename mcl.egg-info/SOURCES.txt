@@ -4,3 +4,8 @@ mcl.egg-info/PKG-INFO
 mcl.egg-info/SOURCES.txt
 mcl.egg-info/dependency_links.txt
 mcl.egg-info/top_level.txt
+tests/__init__.py
+tests/test_fp.py
+tests/test_fr.py
+tests/test_g1.py
+tests/test_g2.py
