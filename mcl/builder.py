@@ -72,35 +72,38 @@ def buildGetStr(cls):
 def buildIsEqual(cls):
     wrapper = utils.wrap_function(
         hook.mclbn384_256,
-        f"mclBnFp_isEqual",
-        None,
+        f"mclBn{cls.__name__}_isEqual",
+        ctypes.c_int64,
         [ctypes.POINTER(cls), ctypes.POINTER(cls)],
     )
 
     def isEqual(self, other):
-        return wrapper(self, other) != 0
+        return wrapper(self, other) == 1
 
     return isEqual
 
 
 def buildIsOne(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256, f"mclBnFp_isOne", None, [ctypes.POINTER(cls)],
+        hook.mclbn384_256, f"mclBn{cls.__name__}_isOne", None, [ctypes.POINTER(cls)],
     )
 
     def isOne(self, other):
-        return wrapper(self) != 0
+        return wrapper(self) == 1
 
     return isOne
 
 
 def buildIsZero(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256, f"mclBnFp_isZero", None, [ctypes.POINTER(cls)],
+        hook.mclbn384_256,
+        f"mclBn{cls.__name__}_isZero",
+        ctypes.c_int64,
+        [ctypes.POINTER(cls)],
     )
 
     def isZero(self, other):
-        return wrapper(self) != 0
+        return wrapper(self) == 1
 
     return isZero
 
@@ -108,7 +111,7 @@ def buildIsZero(cls):
 def buildThreeOp(cls, op_name):
     wrapper = utils.wrap_function(
         hook.mclbn384_256,
-        f"mclBnFp_{op_name}",
+        f"mclBn{cls.__name__}_{op_name}",
         None,
         [ctypes.POINTER(cls), ctypes.POINTER(cls), ctypes.POINTER(cls)],
     )
@@ -125,7 +128,7 @@ def buildThreeOp(cls, op_name):
 def buildTwoOp(cls, op_name):
     wrapper = utils.wrap_function(
         hook.mclbn384_256,
-        f"mclBnFp_{op_name}",
+        f"mclBn{cls.__name__}_{op_name}",
         None,
         [ctypes.POINTER(cls), ctypes.POINTER(cls)],
     )
@@ -137,3 +140,59 @@ def buildTwoOp(cls, op_name):
 
     op.__name__ = op_name
     return op
+
+
+def buildMul(cls, right_op):
+    wrapper = utils.wrap_function(
+        hook.mclbn384_256,
+        f"mclBn{cls.__name__}_mul",
+        None,
+        [ctypes.POINTER(cls), ctypes.POINTER(cls), ctypes.POINTER(right_op)],
+    )
+
+    def mul(self, right):
+        result = cls()
+        wrapper(result, self, right)
+        return result
+
+    return mul
+
+
+def buildSerialize(cls):
+    wrapper = utils.wrap_function(
+        hook.mclbn384_256,
+        f"mclBn{cls.__name__}_serialize",
+        None,
+        [
+            (ctypes.c_char * (BUFFER_SIZE + 1)),
+            ctypes.c_size_t,
+            ctypes.POINTER(cls),
+            ctypes.c_uint64,
+        ],
+    )
+
+    def serialize(self, mode=10):
+        buffer = ctypes.create_string_buffer(b"\0" * BUFFER_SIZE)
+        wrapper(buffer, BUFFER_SIZE, self, mode)
+        return buffer.value
+
+    return serialize
+
+
+def buildDeserialize(cls):
+    wrapper = utils.wrap_function(
+        hook.mclbn384_256,
+        f"mclBn{cls.__name__}_deserialize",
+        None,
+        [
+            (ctypes.c_char * (BUFFER_SIZE + 1)),
+            ctypes.c_size_t,
+            ctypes.POINTER(cls),
+            ctypes.c_uint64,
+        ],
+    )
+
+    def deserialize(self, value):
+        wrapper(self, value, len(value))
+
+    return deserialize

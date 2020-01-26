@@ -6,7 +6,7 @@ import contextlib
 
 from . import consts
 
-DIR_FOR_LINKER = os.environ.get("MCL_PATH", pathlib.Path(__file__).parent.absolute())
+DIR_FOR_LINKER = os.environ.get("MCL_PATH", "/usr/local/opt/mcl")
 
 
 @contextlib.contextmanager

@@ -3,6 +3,7 @@ import ctypes
 from . import builder
 from . import consts
 
+
 class Fr(ctypes.Structure):
     _fields_ = [("v", ctypes.c_ulonglong * consts.FR_SIZE)]
 

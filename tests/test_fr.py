@@ -12,12 +12,8 @@ class FrTests(unittest.TestCase):
 
     def testIsEqual(self):
         l = Fr()
-        l.setStr(b"12345678901234567")
-
-        r = Fr()
-        r.setStr(b"12345678901234567")
-
-        self.assertTrue(l == r)
+        l.setByCSPRNG()
+        self.assertTrue(l == l)
 
     def testSetInt(self):
         Fr().setInt(1)

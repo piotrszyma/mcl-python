@@ -1,6 +1,7 @@
 import unittest
 
 from mcl import G2
+from mcl import Fr
 
 
 class G2Tests(unittest.TestCase):
@@ -21,7 +22,7 @@ class G2Tests(unittest.TestCase):
         G2() - G2()
 
     def testMul(self):
-        G2() * G2()
+        G2() * Fr()
 
     def testNeg(self):
         not G2()
