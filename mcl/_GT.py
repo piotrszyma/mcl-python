@@ -16,4 +16,5 @@ class GT(ctypes.Structure):
     ]
 
 
+GT.__invert__ = builder.buildTwoOp(GT, "inv")
 GT.pairing = builder.buildPairing(GT, G1, G2)

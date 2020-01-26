@@ -3,7 +3,7 @@ import unittest
 from mcl import G1
 from mcl import Fr
 
-G1_POINT = b"1 3685416753713387016781088315183077757961620795782546409894578378688607592378376318836054947676345821548104185464507 1339506544944476473020471379941921221584933875938349620426543736416511423956333506472724655353366534992391756441569"
+import test_data
 
 
 class G1Tests(unittest.TestCase):
@@ -12,9 +12,9 @@ class G1Tests(unittest.TestCase):
 
     def testSetGetStr(self):
         g1 = G1()
-        g1.setStr(G1_POINT)
+        g1.setStr(test_data.G1_STR)
         s = g1.getStr()
-        self.assertEqual(G1_POINT, s)
+        self.assertEqual(test_data.G1_STR, s)
 
     def testAdd(self):
         G1() + G1()
@@ -30,7 +30,7 @@ class G1Tests(unittest.TestCase):
 
     def testNeq(self):
         g1 = G1()
-        g1.setStr(G1_POINT)
+        g1.setStr(test_data.G1_STR)
 
         random_fr = Fr()
         random_fr.setByCSPRNG()

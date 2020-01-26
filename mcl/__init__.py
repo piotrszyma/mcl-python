@@ -5,9 +5,9 @@ from ._GT import GT
 from ._Fp import Fp
 
 __all__ = (
+    "Fp",
     "Fr",
     "G1",
     "G2",
     "GT",
-    "Fp",
 )
