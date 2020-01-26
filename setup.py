@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="mcl",
-    version="0.0.1",
+    version="0.0.2",
     author="Piotr Szyma",
     author_email="thompson2908@gmail.com",
     description="Python wrapper for mcl library",
