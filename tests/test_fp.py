@@ -25,9 +25,13 @@ class FpTests(unittest.TestCase):
     def testNeg(self):
         not Fp()
 
-    @unittest.skip("inv not yet implemented for FP")
     def testInv(self):
-        pass
+        base = Fp()
+        base.setByCSPRNG()
+        inv = ~base
+        self.assertNotEqual(base, inv)
+        inv_of_inv = ~inv
+        self.assertEqual(base, inv_of_inv)
 
     def testSerialization(self):
         Fp().serialize()
