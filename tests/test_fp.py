@@ -25,15 +25,18 @@ class FpTests(unittest.TestCase):
     def testNeg(self):
         not Fp()
 
+    @unittest.skip("inv not yet implemented for FP")
     def testInv(self):
         pass
 
     def testSerialization(self):
-        pass
+        Fp().serialize()
 
+    @unittest.skip("setHashOf not yet implemented for FP")
     def testSetHashOf(self):
         pass
 
+    @unittest.skip("mapToG1 not yet implemented for FP")
     def testMapToG1(self):
         pass
 
