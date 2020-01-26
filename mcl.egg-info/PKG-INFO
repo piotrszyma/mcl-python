@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: mcl
-Version: 0.0.1
+Version: 0.0.2
 Summary: Python wrapper for mcl library
 Home-page: https://github.com/piotrszyma/mcl-python
 Author: Piotr Szyma
