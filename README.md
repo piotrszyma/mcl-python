@@ -1,6 +1,6 @@
 # mcl-python
 
-`mcl-python` is a Python library that creates bindings for [mcl](https://github.com/herumi/mcl) library by `herumi`.
+`mcl-python` is a Python library that creates bindings for [mcl](https://github.com/herumi/mcl) library by `herumi`. For now the only supported curve is `MCLBN384_256`.
 
 ## Installation
 
