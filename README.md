@@ -1,8 +1,10 @@
 # mcl-python
 
-`mcl-python` is a Python library that creates bindings for `mcl` library by `herumi`.
+`mcl-python` is a Python library that creates bindings for [mcl](https://github.com/herumi/mcl) library by `herumi`.
 
 ## Installation
+
+**This package requires [mcl](https://github.com/herumi/mcl) to be preinstalled.**
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install mcl-python.
 
@@ -15,7 +17,18 @@ pip install mcl
 ```python
 import mcl
 
-# TODO: Create sample code
+fr = new mcl.Fr()
+fr.setByCSPRNG()
+```
+
+For more examples, please check [tests](tests/).
+
+## Tests
+
+Tests are written in `unittest`.
+
+```
+python3 -m unittest discover tests/
 ```
 
 ## Contributing
