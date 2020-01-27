@@ -4,7 +4,7 @@
 
 ## Supported curves
 
-For now the only supported curve is `MCLBN384_256`.
+For now the only supported curve is `BLS12_384` (named in library `BN384_256`)
 
 ## Installation
 
