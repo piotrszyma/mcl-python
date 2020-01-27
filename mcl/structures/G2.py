@@ -1,8 +1,7 @@
-import types
-import ctypes
-
 from .. import utils
 from .. import builder
+from . import base
+
 from .Fp2 import Fp2
 from .Fr import Fr
 
@@ -20,7 +19,7 @@ from .Fr import Fr
     builder.method("serialize"),
     builder.method("setStr"),
 )
-class G2(ctypes.Structure):
+class G2(base.Structure):
     _fields_ = [
         ("x", Fp2),
         ("y", Fp2),

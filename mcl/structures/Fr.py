@@ -2,6 +2,7 @@ import ctypes
 
 from .. import builder
 from .. import consts
+from . import base
 
 
 @builder.provide_methods(
@@ -21,5 +22,5 @@ from .. import consts
     builder.method("setInt"),
     builder.method("setStr"),
 )
-class Fr(ctypes.Structure):
+class Fr(base.Structure):
     _fields_ = [("v", ctypes.c_ulonglong * consts.FR_SIZE)]

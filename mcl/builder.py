@@ -120,10 +120,13 @@ def buildIsEqual(cls):
 
 def buildIsOne(cls):
     wrapper = utils.wrap_function(
-        hook.mclbls12_384, f"mclBn{cls.__name__}_isOne", [ctypes.POINTER(cls)],
+        hook.mclbls12_384,
+        f"mclBn{cls.__name__}_isOne",
+        [ctypes.POINTER(cls)],
+        ctypes.c_int64,
     )
 
-    def isOne(self, other):
+    def isOne(self):
         return wrapper(self) == 1
 
     return isOne
@@ -137,7 +140,7 @@ def buildIsZero(cls):
         ctypes.c_int64,
     )
 
-    def isZero(self, other):
+    def isZero(self):
         return wrapper(self) == 1
 
     return isZero
@@ -214,12 +217,7 @@ def buildDeserialize(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_deserialize",
-        [
-            (ctypes.c_char * (BUFFER_SIZE + 1)),
-            ctypes.c_size_t,
-            ctypes.POINTER(cls),
-            ctypes.c_uint64,
-        ],
+        [ctypes.POINTER(cls), ctypes.c_char_p, ctypes.c_size_t],
     )
 
     def deserialize(self, value):
