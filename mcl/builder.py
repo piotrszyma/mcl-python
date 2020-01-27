@@ -8,11 +8,15 @@ from . import utils
 BUFFER_SIZE = 2048
 
 
+def tryGetBuilderMethodFromGlobals(method_name: str) -> callable:
+    return globals().get("build" + method_name[0].upper() + method_name[1:])
+
+
 class WrappedMethodDefinition:
     def __init__(self, as_method):
         self.as_method = as_method
         self.from_method = as_method
-        self.builder_method = None
+        self.builder_method = tryGetBuilderMethodFromGlobals(self.as_method)
         self.args = []
 
     def using(self, builder_method):
@@ -31,8 +35,10 @@ class WrappedMethodDefinition:
         method = self.builder_method(cls, *self.args)
         setattr(cls, self.as_method, method)
 
+
 def method(as_method):
     return WrappedMethodDefinition(as_method)
+
 
 def provide_methods(*definitions):
     def decorator(cls):

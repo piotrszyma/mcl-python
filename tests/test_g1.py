@@ -18,9 +18,9 @@ class G1Tests(unittest.TestCase):
 
     def testEqual(self):
         e1 = G1()
-        e1.setStr(test_data.G1_STR)        
+        e1.setStr(test_data.G1_STR)
         e2 = G1()
-        e2.setStr(test_data.G1_STR)        
+        e2.setStr(test_data.G1_STR)
         self.assertTrue(e1 == e2)
 
     def testAdd(self):
