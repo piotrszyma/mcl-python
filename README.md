@@ -1,4 +1,4 @@
-****# mcl-python
+# mcl-python
 
 `mcl-python` is a Python library that creates bindings for [mcl](https://github.com/herumi/mcl) library by 光成滋生 MITSUNARI Shigeo(herumi@nifty.com).
 
