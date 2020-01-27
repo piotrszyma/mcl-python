@@ -83,4 +83,5 @@ class FpTests(unittest.TestCase):
         self.assertTrue(fp.isOne())
 
     def testRepr(self):
-        self.assertEqual(str(rp), repr(rp))
+        fp = Fp()
+        self.assertEqual(str(fp), repr(fp))
