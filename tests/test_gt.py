@@ -5,7 +5,7 @@ from mcl import G2
 from mcl import G1
 from mcl import Fr
 
-import test_data
+from . import test_data
 
 
 class GTTests(unittest.TestCase):

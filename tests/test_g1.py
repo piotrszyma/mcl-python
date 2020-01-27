@@ -3,7 +3,7 @@ import unittest
 from mcl import G1
 from mcl import Fr
 
-import test_data
+from . import test_data
 
 
 class G1Tests(unittest.TestCase):

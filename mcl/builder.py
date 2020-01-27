@@ -23,10 +23,6 @@ class WrappedMethodDefinition:
         self.builder_method = builder_method
         return self
 
-    def from_(self, from_method):
-        self.from_method = from_method
-        return self
-
     def with_args(self, *args):
         self.args = args
         return self
