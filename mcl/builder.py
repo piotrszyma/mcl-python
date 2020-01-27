@@ -28,21 +28,11 @@ class WrappedMethodDefinition:
         return self
 
     def apply(self, cls):
-        argspec = inspect.getfullargspec(self.builder_method)
-
-        if len(argspec.args) == 1:
-            method = self.builder_method(cls)
-        elif len(argspec.args) == 2:
-            method = self.builder_method(cls, self.from_method)
-        else:
-            method = self.builder_method(cls, *self.args)
-
+        method = self.builder_method(cls, *self.args)
         setattr(cls, self.as_method, method)
 
 def method(as_method):
     return WrappedMethodDefinition(as_method)
-
-
 
 def provide_methods(*definitions):
     def decorator(cls):

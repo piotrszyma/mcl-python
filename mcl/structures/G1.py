@@ -8,10 +8,17 @@ from .Fr import Fr
 
 
 @builder.provide_methods(
-    builder.method('__add__').from_('add').using(builder.buildThreeOp),
-    builder.method('__sub__').from_('sub').using(builder.buildThreeOp),
-    builder.method('__neg__').from_('neg').using(builder.buildTwoOp),
+    builder.method('__add__').using(builder.buildThreeOp).with_args('add'),
     builder.method('__eq__').using(builder.buildIsEqual),
+    builder.method('__mul__').using(builder.buildMul).with_args(Fr),
+    builder.method('__neg__').using(builder.buildTwoOp).with_args('neg'),
+    builder.method('__sub__').using(builder.buildThreeOp).with_args('sub'),
+    builder.method('deserialize').using(builder.buildDeserialize),
+    builder.method('getStr').using(builder.buildGetStr),
+    builder.method('hashAndMapTo').using(builder.buildHashAndMapTo),
+    builder.method('isZero').using(builder.buildIsZero),
+    builder.method('serialize').using(builder.buildSerialize),
+    builder.method('setStr').using(builder.buildSetStr),
 )
 class G1(ctypes.Structure):
     _fields_ = [
@@ -19,12 +26,3 @@ class G1(ctypes.Structure):
         ("y", Fp),
         ("z", Fp),
     ]
-
-
-G1.__mul__ = builder.buildMul(G1, Fr)
-G1.deserialize = builder.buildDeserialize(G1)
-G1.getStr = builder.buildGetStr(G1)
-G1.hashAndMapTo = builder.buildHashAndMapTo(G1)
-G1.isZero = builder.buildIsZero(G1)
-G1.serialize = builder.buildSerialize(G1)
-G1.setStr = builder.buildSetStr(G1)

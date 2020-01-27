@@ -9,7 +9,7 @@ from .Fp import Fp
 
 
 @builder.provide_methods(
-    builder.method('__invert__').from_('inv').using(builder.buildTwoOp),
+    builder.method('__invert__').using(builder.buildTwoOp).with_args('inv'),
     builder.method('pairing').using(builder.buildPairing).with_args(G1, G2),
 )
 class GT(ctypes.Structure):

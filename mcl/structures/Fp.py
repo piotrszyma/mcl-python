@@ -4,22 +4,22 @@ from .. import builder
 from .. import consts
 
 
+@builder.provide_methods(
+    builder.method('__add__').using(builder.buildThreeOp).with_args('add'),
+    builder.method('__eq__').using(builder.buildIsEqual),
+    builder.method('__invert__').using(builder.buildTwoOp).with_args('inv'),
+    builder.method('__mul__').using(builder.buildThreeOp).with_args('mul'),
+    builder.method('__neg__').using(builder.buildTwoOp).with_args('neg'),
+    builder.method('__sub__').using(builder.buildThreeOp).with_args('sub'),
+    builder.method('__truediv__').using(builder.buildThreeOp).with_args('div'),
+    builder.method('deserialize').using(builder.buildDeserialize),
+    builder.method('getStr').using(builder.buildGetStr),
+    builder.method('isOne').using(builder.buildIsOne),
+    builder.method('isZero').using(builder.buildIsZero),
+    builder.method('serialize').using(builder.buildSerialize),
+    builder.method('setByCSPRNG').using(builder.buildSetByCSPRNG),
+    builder.method('setInt').using(builder.buildSetInt),
+    builder.method('setStr').using(builder.buildSetStr),
+)
 class Fp(ctypes.Structure):
     _fields_ = [("v", ctypes.c_ulonglong * consts.FP_SIZE)]
-
-
-Fp.__add__ = builder.buildThreeOp(Fp, "add")
-Fp.__eq__ = builder.buildIsEqual(Fp)
-Fp.__invert__ = builder.buildTwoOp(Fp, "inv")
-Fp.__mul__ = builder.buildThreeOp(Fp, "mul")
-Fp.__neg__ = builder.buildTwoOp(Fp, "neg")
-Fp.__sub__ = builder.buildThreeOp(Fp, "sub")
-Fp.__truediv__ = builder.buildThreeOp(Fp, "div")
-Fp.deserialize = builder.buildDeserialize(Fp)
-Fp.getStr = builder.buildGetStr(Fp)
-Fp.isOne = builder.buildIsOne(Fp)
-Fp.isZero = builder.buildIsZero(Fp)
-Fp.serialize = builder.buildSerialize(Fp)
-Fp.setByCSPRNG = builder.buildSetByCSPRNG(Fp)
-Fp.setInt = builder.buildSetInt(Fp)
-Fp.setStr = builder.buildSetStr(Fp)
