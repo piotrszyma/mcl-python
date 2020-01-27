@@ -3,7 +3,7 @@ import unittest
 from mcl import G1
 from mcl import Fr
 
-import test_data
+from . import test_data
 
 
 class G1Tests(unittest.TestCase):
@@ -15,6 +15,13 @@ class G1Tests(unittest.TestCase):
         g1.setStr(test_data.G1_STR)
         s = g1.getStr()
         self.assertEqual(test_data.G1_STR, s)
+
+    def testEqual(self):
+        e1 = G1()
+        e1.setStr(test_data.G1_STR)        
+        e2 = G1()
+        e2.setStr(test_data.G1_STR)        
+        self.assertTrue(e1 == e2)
 
     def testAdd(self):
         G1() + G1()

@@ -7,6 +7,12 @@ from .Fp import Fp
 from .Fr import Fr
 
 
+@builder.provide_methods(
+    builder.method('__add__').from_('add').using(builder.buildThreeOp),
+    builder.method('__sub__').from_('sub').using(builder.buildThreeOp),
+    builder.method('__neg__').from_('neg').using(builder.buildTwoOp),
+    builder.method('__eq__').using(builder.buildIsEqual),
+)
 class G1(ctypes.Structure):
     _fields_ = [
         ("x", Fp),
@@ -15,11 +21,7 @@ class G1(ctypes.Structure):
     ]
 
 
-G1.__add__ = builder.buildThreeOp(G1, "add")
-G1.__eq__ = builder.buildIsEqual(G1)
 G1.__mul__ = builder.buildMul(G1, Fr)
-G1.__neg__ = builder.buildTwoOp(G1, "neg")
-G1.__sub__ = builder.buildThreeOp(G1, "sub")
 G1.deserialize = builder.buildDeserialize(G1)
 G1.getStr = builder.buildGetStr(G1)
 G1.hashAndMapTo = builder.buildHashAndMapTo(G1)

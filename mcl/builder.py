@@ -83,7 +83,7 @@ def buildSetInt(cls):
 
 def buildSetByCSPRNG(cls):
     wrapper = utils.wrap_function(
-        hook.mclbls384_256, f"mclBn{cls.__name__}_setByCSPRNG", [ctypes.POINTER(cls)],
+        hook.mclbls12_384, f"mclBn{cls.__name__}_setByCSPRNG", [ctypes.POINTER(cls)],
     )
 
     def setByCSPRNG(self):
