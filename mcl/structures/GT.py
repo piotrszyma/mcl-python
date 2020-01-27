@@ -8,11 +8,11 @@ from .G2 import G2
 from .Fp import Fp
 
 
+@builder.provide_methods(
+    builder.method('__invert__').from_('inv').using(builder.buildTwoOp),
+    builder.method('pairing').using(builder.buildPairing).with_args(G1, G2),
+)
 class GT(ctypes.Structure):
     _fields_ = [
         ("d", (Fp * 12)),
     ]
-
-
-GT.__invert__ = builder.buildTwoOp(GT, "inv")
-GT.pairing = builder.buildPairing(GT, G1, G2)

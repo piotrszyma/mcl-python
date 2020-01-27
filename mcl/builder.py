@@ -1,9 +1,58 @@
 import ctypes
+import dataclasses
+import inspect
 
 from . import hook
 from . import utils
 
 BUFFER_SIZE = 2048
+
+
+class WrappedMethodDefinition:
+    def __init__(self, as_method):
+        self.as_method = as_method
+        self.from_method = as_method
+        self.builder_method = None
+        self.args = []
+
+    def using(self, builder_method):
+        self.builder_method = builder_method
+        return self
+
+    def from_(self, from_method):
+        self.from_method = from_method
+        return self
+
+    def with_args(self, *args):
+        self.args = args
+        return self
+
+    def apply(self, cls):
+        argspec = inspect.getfullargspec(self.builder_method)
+
+        if len(argspec.args) == 1:
+            method = self.builder_method(cls)
+        elif len(argspec.args) == 2:
+            method = self.builder_method(cls, self.from_method)
+        else:
+            method = self.builder_method(cls, *self.args)
+
+        setattr(cls, self.as_method, method)
+
+def method(as_method):
+    return WrappedMethodDefinition(as_method)
+
+
+
+def provide_methods(*definitions):
+    def decorator(cls):
+
+        for definition in definitions:
+            definition.apply(cls)
+
+        return cls
+
+    return decorator
 
 
 def buildSetStr(cls):
@@ -207,7 +256,7 @@ def buildPairing(cls, left_group, right_group):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn_pairing",
-        [ctypes.POINTER(cls), ctypes.POINTER(left_group), ctypes.POINTER(right_group),],
+        (ctypes.POINTER(cls), ctypes.POINTER(left_group), ctypes.POINTER(right_group)),
     )
 
     @staticmethod

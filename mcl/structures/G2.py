@@ -7,6 +7,9 @@ from .Fp2 import Fp2
 from .Fr import Fr
 
 
+@builder.provide_methods(
+    
+)
 class G2(ctypes.Structure):
     _fields_ = [
         ("x", Fp2),
