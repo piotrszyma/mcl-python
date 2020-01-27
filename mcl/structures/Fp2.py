@@ -1,7 +1,7 @@
 import ctypes
 
 from .Fp import Fp
-from ..hook import mclbn384_256
+from ..hook import mclbls12_384
 
 
 class Fp2(ctypes.Structure):

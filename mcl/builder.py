@@ -8,7 +8,7 @@ BUFFER_SIZE = 2048
 
 def buildSetStr(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_setStr",
         None,
         [ctypes.POINTER(cls), ctypes.c_char_p, ctypes.c_size_t, ctypes.c_int64],
@@ -22,7 +22,7 @@ def buildSetStr(cls):
 
 def buildSetInt(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_setInt",
         None,
         [ctypes.POINTER(cls), ctypes.c_int64],
@@ -36,7 +36,7 @@ def buildSetInt(cls):
 
 def buildSetByCSPRNG(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_setByCSPRNG",
         None,
         [ctypes.POINTER(cls)],
@@ -50,7 +50,7 @@ def buildSetByCSPRNG(cls):
 
 def buildGetStr(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_getStr",
         None,
         [
@@ -71,7 +71,7 @@ def buildGetStr(cls):
 
 def buildIsEqual(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_isEqual",
         ctypes.c_int64,
         [ctypes.POINTER(cls), ctypes.POINTER(cls)],
@@ -85,7 +85,7 @@ def buildIsEqual(cls):
 
 def buildIsOne(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256, f"mclBn{cls.__name__}_isOne", None, [ctypes.POINTER(cls)],
+        hook.mclbls12_384, f"mclBn{cls.__name__}_isOne", None, [ctypes.POINTER(cls)],
     )
 
     def isOne(self, other):
@@ -96,7 +96,7 @@ def buildIsOne(cls):
 
 def buildIsZero(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_isZero",
         ctypes.c_int64,
         [ctypes.POINTER(cls)],
@@ -110,7 +110,7 @@ def buildIsZero(cls):
 
 def buildThreeOp(cls, op_name):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_{op_name}",
         None,
         [ctypes.POINTER(cls), ctypes.POINTER(cls), ctypes.POINTER(cls)],
@@ -127,7 +127,7 @@ def buildThreeOp(cls, op_name):
 
 def buildTwoOp(cls, op_name):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_{op_name}",
         None,
         [ctypes.POINTER(cls), ctypes.POINTER(cls)],
@@ -144,7 +144,7 @@ def buildTwoOp(cls, op_name):
 
 def buildMul(cls, right_op):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_mul",
         None,
         [ctypes.POINTER(cls), ctypes.POINTER(cls), ctypes.POINTER(right_op)],
@@ -160,7 +160,7 @@ def buildMul(cls, right_op):
 
 def buildSerialize(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_serialize",
         None,
         [
@@ -181,7 +181,7 @@ def buildSerialize(cls):
 
 def buildDeserialize(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_deserialize",
         None,
         [
@@ -200,7 +200,7 @@ def buildDeserialize(cls):
 
 def buildHashAndMapTo(cls):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn{cls.__name__}_hashAndMapTo",
         None,
         [ctypes.POINTER(cls), ctypes.c_char_p, ctypes.c_size_t],
@@ -217,7 +217,7 @@ def buildHashAndMapTo(cls):
 
 def buildPairing(cls, left_group, right_group):
     wrapper = utils.wrap_function(
-        hook.mclbn384_256,
+        hook.mclbls12_384,
         f"mclBn_pairing",
         None,
         [ctypes.POINTER(cls), ctypes.POINTER(left_group), ctypes.POINTER(right_group),],
