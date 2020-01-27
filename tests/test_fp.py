@@ -11,7 +11,12 @@ class FpTests(unittest.TestCase):
         Fp().setByCSPRNG()
 
     def testAdd(self):
-        Fp() + Fp()
+        l = Fp()
+        l.setInt(1)
+        r = Fp()
+        r.setInt(2)
+        result = l + r
+        self.assertEqual(result.getStr(), b"3")
 
     def testSub(self):
         Fp() - Fp()
@@ -20,7 +25,7 @@ class FpTests(unittest.TestCase):
         Fp() * Fp()
 
     def testDiv(self):
-        Fp() / Fp()
+        result = Fp() / Fp()
 
     def testNeg(self):
         not Fp()
@@ -34,7 +39,17 @@ class FpTests(unittest.TestCase):
         self.assertEqual(base, inv_of_inv)
 
     def testSerialization(self):
-        Fp().serialize()
+        fp = Fp()
+        fp.setByCSPRNG()
+        serialized = fp.serialize()
+        fp2 = Fp()
+        fp2.deserialize(serialized)
+        self.assertEqual(fp, fp2)
+
+    def testStrRepr(self):
+        fp = Fp()
+        expected = "<class 'mcl.structures.Fp.Fp'> 0"
+        self.assertEqual(expected, str(fp))
 
     @unittest.skip("setHashOf not yet implemented for FP")
     def testSetHashOf(self):
@@ -51,4 +66,18 @@ class FpTests(unittest.TestCase):
         self.assertEqual(b"255", s)
 
     def testSetInt(self):
-        Fp().setInt(1)
+        fp = Fp()
+        fp.setInt(123)
+        self.assertEqual(b"123", fp.getStr())
+
+    def testIsZero(self):
+        fp = Fp()
+        fp.setInt(0)
+        self.assertEqual(b"0", fp.getStr())
+        self.assertTrue(fp.isZero())
+
+    def testIsOne(self):
+        fp = Fp()
+        fp.setInt(1)
+        self.assertEqual(b"1", fp.getStr())
+        self.assertTrue(fp.isOne())

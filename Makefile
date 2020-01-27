@@ -1,5 +1,5 @@
 test:
-	python3 -m unittest discover tests/
+	python3 -m unittest discover
 
 publish:
 	python3 setup.py sdist bdist_wheel --universal
