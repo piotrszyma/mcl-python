@@ -7,22 +7,22 @@ from .Fp2 import Fp2
 from .Fr import Fr
 
 
+@builder.provide_methods(
+    builder.method("__add__").using(builder.buildThreeOp).with_args("add"),
+    builder.method("__eq__").using(builder.buildIsEqual),
+    builder.method("__mul__").using(builder.buildMul).with_args(Fr),
+    builder.method("__neg__").using(builder.buildTwoOp).with_args("neg"),
+    builder.method("__sub__").using(builder.buildThreeOp).with_args("sub"),
+    builder.method("deserialize"),
+    builder.method("getStr"),
+    builder.method("hashAndMapTo"),
+    builder.method("isZero"),
+    builder.method("serialize"),
+    builder.method("setStr"),
+)
 class G2(ctypes.Structure):
     _fields_ = [
         ("x", Fp2),
         ("y", Fp2),
         ("z", Fp2),
     ]
-
-
-G2.__add__ = builder.buildThreeOp(G2, "add")
-G2.__eq__ = builder.buildIsEqual(G2)
-G2.__mul__ = builder.buildMul(G2, Fr)
-G2.__neg__ = builder.buildTwoOp(G2, "neg")
-G2.__sub__ = builder.buildThreeOp(G2, "sub")
-G2.deserialize = builder.buildDeserialize(G2)
-G2.getStr = builder.buildGetStr(G2)
-G2.hashAndMapTo = builder.buildHashAndMapTo(G2)
-G2.isZero = builder.buildIsZero(G2)
-G2.serialize = builder.buildSerialize(G2)
-G2.setStr = builder.buildSetStr(G2)

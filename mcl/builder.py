@@ -1,4 +1,6 @@
 import ctypes
+import dataclasses
+import inspect
 
 from . import hook
 from . import utils
@@ -6,11 +8,53 @@ from . import utils
 BUFFER_SIZE = 2048
 
 
+def tryGetBuilderMethodFromGlobals(method_name: str) -> callable:
+    return globals().get("build" + method_name[0].upper() + method_name[1:])
+
+
+class WrappedMethodDefinition:
+    def __init__(self, as_method):
+        self.as_method = as_method
+        self.from_method = as_method
+        self.builder_method = tryGetBuilderMethodFromGlobals(self.as_method)
+        self.args = []
+
+    def using(self, builder_method):
+        self.builder_method = builder_method
+        return self
+
+    def from_(self, from_method):
+        self.from_method = from_method
+        return self
+
+    def with_args(self, *args):
+        self.args = args
+        return self
+
+    def apply(self, cls):
+        method = self.builder_method(cls, *self.args)
+        setattr(cls, self.as_method, method)
+
+
+def method(as_method):
+    return WrappedMethodDefinition(as_method)
+
+
+def provide_methods(*definitions):
+    def decorator(cls):
+
+        for definition in definitions:
+            definition.apply(cls)
+
+        return cls
+
+    return decorator
+
+
 def buildSetStr(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_setStr",
-        None,
         [ctypes.POINTER(cls), ctypes.c_char_p, ctypes.c_size_t, ctypes.c_int64],
     )
 
@@ -24,7 +68,6 @@ def buildSetInt(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_setInt",
-        None,
         [ctypes.POINTER(cls), ctypes.c_int64],
     )
 
@@ -36,10 +79,7 @@ def buildSetInt(cls):
 
 def buildSetByCSPRNG(cls):
     wrapper = utils.wrap_function(
-        hook.mclbls12_384,
-        f"mclBn{cls.__name__}_setByCSPRNG",
-        None,
-        [ctypes.POINTER(cls)],
+        hook.mclbls12_384, f"mclBn{cls.__name__}_setByCSPRNG", [ctypes.POINTER(cls)],
     )
 
     def setByCSPRNG(self):
@@ -52,7 +92,6 @@ def buildGetStr(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_getStr",
-        None,
         [
             (ctypes.c_char * (BUFFER_SIZE + 1)),
             ctypes.c_size_t,
@@ -73,8 +112,8 @@ def buildIsEqual(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_isEqual",
-        ctypes.c_int64,
         [ctypes.POINTER(cls), ctypes.POINTER(cls)],
+        ctypes.c_int64,
     )
 
     def isEqual(self, other):
@@ -85,7 +124,7 @@ def buildIsEqual(cls):
 
 def buildIsOne(cls):
     wrapper = utils.wrap_function(
-        hook.mclbls12_384, f"mclBn{cls.__name__}_isOne", None, [ctypes.POINTER(cls)],
+        hook.mclbls12_384, f"mclBn{cls.__name__}_isOne", [ctypes.POINTER(cls)],
     )
 
     def isOne(self, other):
@@ -98,8 +137,8 @@ def buildIsZero(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_isZero",
-        ctypes.c_int64,
         [ctypes.POINTER(cls)],
+        ctypes.c_int64,
     )
 
     def isZero(self, other):
@@ -112,7 +151,6 @@ def buildThreeOp(cls, op_name):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_{op_name}",
-        None,
         [ctypes.POINTER(cls), ctypes.POINTER(cls), ctypes.POINTER(cls)],
     )
 
@@ -129,7 +167,6 @@ def buildTwoOp(cls, op_name):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_{op_name}",
-        None,
         [ctypes.POINTER(cls), ctypes.POINTER(cls)],
     )
 
@@ -146,7 +183,6 @@ def buildMul(cls, right_op):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_mul",
-        None,
         [ctypes.POINTER(cls), ctypes.POINTER(cls), ctypes.POINTER(right_op)],
     )
 
@@ -162,7 +198,6 @@ def buildSerialize(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_serialize",
-        None,
         [
             (ctypes.c_char * (BUFFER_SIZE + 1)),
             ctypes.c_size_t,
@@ -183,7 +218,6 @@ def buildDeserialize(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_deserialize",
-        None,
         [
             (ctypes.c_char * (BUFFER_SIZE + 1)),
             ctypes.c_size_t,
@@ -202,7 +236,6 @@ def buildHashAndMapTo(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_hashAndMapTo",
-        None,
         [ctypes.POINTER(cls), ctypes.c_char_p, ctypes.c_size_t],
     )
 
@@ -219,8 +252,7 @@ def buildPairing(cls, left_group, right_group):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn_pairing",
-        None,
-        [ctypes.POINTER(cls), ctypes.POINTER(left_group), ctypes.POINTER(right_group),],
+        (ctypes.POINTER(cls), ctypes.POINTER(left_group), ctypes.POINTER(right_group)),
     )
 
     @staticmethod
