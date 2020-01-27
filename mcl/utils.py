@@ -1,4 +1,4 @@
-def wrap_function(lib, funcname, restype, argtypes):
+def wrap_function(lib, funcname, argtypes, restype=None):
     """Simplify wrapping ctypes functions"""
     func = lib.__getattr__(funcname)
     func.restype = restype
