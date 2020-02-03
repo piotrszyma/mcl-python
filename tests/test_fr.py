@@ -10,11 +10,10 @@ def createRandomFr() -> Fr:
 
 
 class FrTests(unittest.TestCase):
-
     @unittest.skip("Init args not yet supported")
     def testAdd(self):
         self.assertEqual(Fr(30), Fr(10) + Fr(20))
-        
+
     @unittest.skip("Init args not yet supported")
     def testEquals(self):
         self.assertEqual(Fr(20), Fr(20))
