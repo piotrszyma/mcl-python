@@ -23,3 +23,27 @@ from .. import consts
 )
 class Fr(ctypes.Structure):
     _fields_ = [("v", ctypes.c_ulonglong * consts.FR_SIZE)]
+
+    def deserialize(self, value: str) -> None:
+        ...
+
+    def getStr(self, value: str) -> None:
+        ...
+
+    def isOne(self) -> None:
+        ...
+
+    def isZero(self) -> None:
+        ... 
+    
+    def serialize(self) -> None:
+        ...
+
+    def setByCSPRNG(self) -> None:
+        ...
+
+    def setInt(self, value: int) -> None:
+        ...
+
+    def setStr(self, value: str) -> None:
+        ...
