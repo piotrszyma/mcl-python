@@ -43,6 +43,12 @@ class Fr(ctypes.Structure):
     def setByCSPRNG(self):
         return mclbn384_256.mclBnFr_setByCSPRNG(ctypes.byref(self.v))
 
+    @classmethod
+    def random(cls):
+        value = cls()
+        value.setByCSPRNG()
+        return value
+
     def __eq__(self, rhs):
         return (
             mclbn384_256.mclBnFr_isEqual(ctypes.byref(self.v), ctypes.byref(rhs.v)) != 0
