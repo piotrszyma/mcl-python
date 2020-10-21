@@ -1,7 +1,6 @@
 import ctypes
 
-from .. import builder
-from .. import consts
+from .. import builder, consts
 
 
 @builder.provide_methods(
@@ -23,3 +22,8 @@ from .. import consts
 )
 class Fp(ctypes.Structure):
     _fields_ = [("v", ctypes.c_ulonglong * consts.FP_SIZE)]
+
+    def __repr__(self):
+        import pdb
+
+        pdb.set_trace()

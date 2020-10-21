@@ -1,90 +1,88 @@
 import ctypes
 
-from .. import builder
-from .. import consts
+from .. import hook
 
-from mcl.bindings import class_binding
-from mcl.bindings import method_binding
+mclbn384_256 = hook.mclbls12_384
 
 
-# @builder.provide_methods(
-#     builder.method("__add__").using(builder.buildThreeOp).with_args("add"),
-#     builder.method("__eq__").using(builder.buildIsEqual),
-#     builder.method("__invert__").using(builder.buildTwoOp).with_args("inv"),
-#     builder.method("__mul__").using(builder.buildThreeOp).with_args("mul"),
-#     builder.method("__neg__").using(builder.buildTwoOp).with_args("neg"),
-#     builder.method("__sub__").using(builder.buildThreeOp).with_args("sub"),
-#     builder.method("__truediv__").using(builder.buildThreeOp).with_args("div"),
-#     builder.method("deserialize"),
-#     builder.method("getStr"),
-#     builder.method("isOne"),
-#     builder.method("isZero"),
-#     builder.method("serialize"),
-#     builder.method("setByCSPRNG"),
-#     builder.method("setInt"),
-#     builder.method("setStr"),
-# )
-@class_binding()
 class Fr(ctypes.Structure):
-    _fields_ = [("v", ctypes.c_ulonglong * consts.FR_SIZE)]
+    _fields_ = [("v", ctypes.c_ulonglong * 6)]
 
-    @classmethod
-    @method_binding("mclBnFr_deserialize")
-    def deserialize(cls, value: str) -> None:
-        ...
+    def __init__(self, value=None):
+        if value is None:
+            return
 
-    @method_binding("mclBnFr_getStr")
-    def getStr(self, value: str) -> str:
-        ...
+        if isinstance(value, str):
+            self.setStr(value)
+        elif isinstance(value, int):
+            self.setInt(value)
 
-    @method_binding("mclBnFr_isOne")
-    def isOne(self) -> bool:
-        ...
+    def setInt(self, v):
+        mclbn384_256.mclBnFr_setInt(ctypes.byref(self.v), v)
 
-    @method_binding("mclBnFr_isZero")
-    def isZero(self) -> bool:
-        ...
+    def setStr(self, value: str):
+        value = value if isinstance(value, bytes) else value.encode()
+        error = mclbn384_256.mclBnFr_setStr(
+            ctypes.byref(self.v), ctypes.c_char_p(value), len(value), 10
+        )
+        if error:
+            raise RuntimeError("mclBnFr_setStr failed")
 
-    @method_binding("mclBnFr_serialize")
-    def serialize(self) -> None:
-        ...
+    def getStr(self):
+        svLen = 2048
+        sv = ctypes.create_string_buffer(b"\0" * svLen)
+        mclbn384_256.mclBnFr_getStr(sv, svLen, ctypes.byref(self.v), 10)
+        return sv.value.decode()
 
-    @method_binding("mclBnFr_setByCSPRNG")
-    def setByCSPRNG(self) -> None:
-        ...
+    def isZero(self):
+        return mclbn384_256.mclBnFr_isZero(ctypes.byref(self.v)) != 0
 
-    @method_binding("mclBnFr_setInt")
-    def setInt(self, value: int) -> None:
-        ...
+    def isOne(self):
+        return mclbn384_256.mclBnFr_isOne(ctypes.byref(self.v)) != 0
 
-    @method_binding("mclBnFr_setStr")
-    def setStr(self, value: str) -> None:
-        ...
+    def setByCSPRNG(self):
+        return mclbn384_256.mclBnFr_setByCSPRNG(ctypes.byref(self.v))
 
-    @method_binding("mclBnFr_add")
-    def __add__(self, other: "Fr") -> "Fr":
-        ...
+    def __eq__(self, rhs):
+        return (
+            mclbn384_256.mclBnFr_isEqual(ctypes.byref(self.v), ctypes.byref(rhs.v)) != 0
+        )
 
-    @method_binding("mclBnFr_sub")
-    def __sub__(self, other: "Fr") -> "Fr":
-        ...
+    def __ne__(self, rhs):
+        return not (self == rhs)
 
-    @method_binding("mclBnFr_div")
-    def __truediv__(self, other: "Fr") -> "Fr":
-        ...
+    def __add__(self, rhs):
+        ret = Fr()
+        mclbn384_256.mclBnFr_add(
+            ctypes.byref(ret.v), ctypes.byref(self.v), ctypes.byref(rhs.v)
+        )
+        return ret
 
-    @method_binding("mclBnFr_isEqual")
-    def __eq__(self, other: "Fr") -> "Fr":
-        ...
+    def __sub__(self, rhs):
+        ret = Fr()
+        mclbn384_256.mclBnFr_sub(
+            ctypes.byref(ret.v), ctypes.byref(self.v), ctypes.byref(rhs.v)
+        )
+        return ret
 
-    @method_binding("mclBnFr_inv")
-    def __invert__(self) -> "Fr":
-        ...
+    def __mul__(self, rhs):
+        ret = Fr()
+        mclbn384_256.mclBnFr_mul(
+            ctypes.byref(ret.v), ctypes.byref(self.v), ctypes.byref(rhs.v)
+        )
+        return ret
 
-    @method_binding("mclBnFr_mul")
-    def __mul__(self, other: "Fr") -> "Fr":
-        ...
+    def __div__(self, rhs):
+        ret = Fr()
+        mclbn384_256.mclBnFr_div(
+            ctypes.byref(ret.v), ctypes.byref(self.v), ctypes.byref(rhs.v)
+        )
+        return ret
 
-    @method_binding("mclBnFr_neg")
-    def __neg__(self) -> "Fr":
-        ...
+    def __invert__(self):
+        ret = Fr()
+        mclbn384_256.mclBnFr_neg(ctypes.byref(ret.v), ctypes.byref(self.v))
+        return ret
+
+    def __repr__(self):
+        return f"Fr({self.getStr()})"

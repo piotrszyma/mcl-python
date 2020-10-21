@@ -1,8 +1,7 @@
-import types
 import ctypes
+import types
 
-from .. import utils
-from .. import builder
+from .. import builder, utils
 from .Fp import Fp
 from .Fr import Fr
 

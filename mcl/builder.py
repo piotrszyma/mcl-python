@@ -2,13 +2,12 @@ import ctypes
 import dataclasses
 import inspect
 
-from . import hook
-from . import utils
+from . import hook, utils
 
 BUFFER_SIZE = 2048
 
 
-def tryGetBuilderMethodFromGlobals(method_name: str) -> callable:
+def tryGetBuilderMethodFromGlobals(method_name: str):
     return globals().get("build" + method_name[0].upper() + method_name[1:])
 
 
@@ -51,7 +50,12 @@ def buildSetStr(cls):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn{cls.__name__}_setStr",
-        [ctypes.POINTER(cls), ctypes.c_char_p, ctypes.c_size_t, ctypes.c_int64],
+        [
+            ctypes.POINTER(cls),
+            ctypes.c_char_p,
+            ctypes.c_size_t,
+            ctypes.c_int64,
+        ],
     )
 
     def setStr(self, value, mode=10):
@@ -75,7 +79,9 @@ def buildSetInt(cls):
 
 def buildSetByCSPRNG(cls):
     wrapper = utils.wrap_function(
-        hook.mclbls12_384, f"mclBn{cls.__name__}_setByCSPRNG", [ctypes.POINTER(cls)],
+        hook.mclbls12_384,
+        f"mclBn{cls.__name__}_setByCSPRNG",
+        [ctypes.POINTER(cls)],
     )
 
     def setByCSPRNG(self):
@@ -120,7 +126,9 @@ def buildIsEqual(cls):
 
 def buildIsOne(cls):
     wrapper = utils.wrap_function(
-        hook.mclbls12_384, f"mclBn{cls.__name__}_isOne", [ctypes.POINTER(cls)],
+        hook.mclbls12_384,
+        f"mclBn{cls.__name__}_isOne",
+        [ctypes.POINTER(cls)],
     )
 
     def isOne(self, other):
@@ -248,7 +256,11 @@ def buildPairing(cls, left_group, right_group):
     wrapper = utils.wrap_function(
         hook.mclbls12_384,
         f"mclBn_pairing",
-        (ctypes.POINTER(cls), ctypes.POINTER(left_group), ctypes.POINTER(right_group)),
+        (
+            ctypes.POINTER(cls),
+            ctypes.POINTER(left_group),
+            ctypes.POINTER(right_group),
+        ),
     )
 
     @staticmethod

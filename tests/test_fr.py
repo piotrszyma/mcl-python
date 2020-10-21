@@ -10,36 +10,29 @@ def createRandomFr() -> Fr:
 
 
 class FrTests(unittest.TestCase):
-    @unittest.skip("Init args not yet supported")
+
     def testAdd(self):
         self.assertEqual(Fr(30), Fr(10) + Fr(20))
 
-    @unittest.skip("Init args not yet supported")
     def testEquals(self):
         self.assertEqual(Fr(20), Fr(20))
 
-    @unittest.skip("Init args not yet supported")
     def testInvert(self):
         self.assertEqual(Fr(10), ~~Fr(10))
 
-    @unittest.skip("Init args not yet supported")
     def testMul(self):
         self.assertEqual(Fr(8), Fr(4) * Fr(2))
-
-    @unittest.skip("Init args not yet supported")
-    def testNeg(self):
-        self.assertEqual(-Fr(10), Fr(8))
 
     def testInitFr(self):
         self.assertIsNotNone(Fr())
 
     def testSetStr(self):
         # Arrange.
-        expected = b"12345678901234567"
+        expected = "1234567"
         fr = Fr()
 
         # Act.
-        fr.setStr(b"12345678901234567")
+        fr.setStr("1234567")
 
         # Assert.
         self.assertEqual(expected, fr.getStr())
@@ -56,17 +49,12 @@ class FrTests(unittest.TestCase):
     def testSetInt(self):
         Fr().setInt(1)
 
-    def testMul(self):
-        Fr() * Fr()
-
     def testGetStr(self):
         fr = Fr()
-        fr.setStr(b"255")
+        fr.setStr("255")
         s = fr.getStr()
-        self.assertEqual(b"255", s)
+        self.assertEqual("255", s)
 
     def testByCSPRNG(self):
         Fr().setByCSPRNG()
 
-    def testIsEqual(self):
-        self.assertEqual(Fr(), Fr())
