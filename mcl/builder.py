@@ -207,8 +207,8 @@ def buildSerialize(cls):
 
     def serialize(self, mode=10):
         buffer = ctypes.create_string_buffer(b"\0" * BUFFER_SIZE)
-        wrapper(buffer, BUFFER_SIZE, self, mode)
-        return buffer.value
+        length = wrapper(buffer, BUFFER_SIZE, self, mode)
+        return buffer.raw[:length]
 
     return serialize
 
